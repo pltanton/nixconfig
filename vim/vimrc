@@ -1,0 +1,101 @@
+syntax on
+set background=dark
+set shell=/bin/sh
+set encoding=utf-8
+set spelllang=en_us,ru_ru
+set showcmd                
+set mouse=a
+set incsearch
+set nohlsearch
+set ignorecase
+set smartcase
+set wrap
+set autoread
+set ruler
+set hidden
+set colorcolumn=80
+set modeline
+set modelines=5
+set relativenumber
+set termguicolors
+set splitbelow
+set splitright
+
+let mapleader="\<Space>"
+
+" Indents
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+
+" History
+set history=64
+set undolevels=128
+set undofile
+set undodir=~/.config/nvim/undodir
+set undolevels=1000
+set undoreload=10000
+
+" Windows
+nmap <leader>s<left>   :leftabove  vnew<cr>
+nmap <leader>s<right>  :rightbelow vnew<cr>
+nmap <leader>s<up>     :leftabove  new<cr>
+nmap <leader>s<down>   :rightbelow new<cr>
+
+nnoremap <C-H> <C-W><C-H> 
+nnoremap <C-J> <C-W><C-J> 
+nnoremap <C-K> <C-W><C-K> 
+nnoremap <C-L> <C-W><C-L> 
+
+
+" Buffers
+nnoremap <leader>x      :bp <bar> bd #<cr>
+nnoremap <leader>n      :bn<cr>
+nnoremap <leader>p      :bp<cr>
+
+" Improved navigation on wrapped lines
+nnoremap j gj
+nnoremap k gk
+
+"==============================================================================
+"=== SPECIAL VIM MAGIC
+"==============================================================================
+
+" Switch to US layout on normal mode
+let g:layout='dvp'
+function! SetUsLayout()
+    let g:layout=system('xkblayout-state print %v')
+    silent ! xkblayout-state set 0
+endfunction
+
+function! RestoreLayout()
+    if g:layout != 'dvp'
+        silent ! xkblayout-state set 1
+    endif
+endfunction
+
+autocmd InsertLeave * call SetUsLayout()
+autocmd InsertEnter * call RestoreLayout()
+
+" Save files which require root permission
+cmap w!! %!sudo tee > /dev/null %
+
+inoremap jj <Esc> " Esc is so far away without this mapping...
+
+" Disable arrows
+map <Up> <NOP>
+map <Down> <NOP>
+map <Left> <NOP>
+map <Right> <NOP>
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+
+" Move visual blocks
+vnoremap < <gv
+vnoremap > >gv
+
+
+colorscheme OceanicNext
