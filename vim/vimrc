@@ -98,4 +98,20 @@ vnoremap < <gv
 vnoremap > >gv
 
 
-colorscheme OceanicNext
+colorscheme material-theme
+
+
+" Deoplete
+set completeopt+=noselect
+let g:deoplete#enable_at_startup = 1
+
+" Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
+" NERD Tree
+let g:airline_theme = 'tomorrow'
+map <F10> :NERDTreeToggle<CR>
+
+" GHC Mod
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc

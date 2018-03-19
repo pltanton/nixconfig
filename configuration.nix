@@ -14,6 +14,10 @@
     plymouth.enable = true;
   };
 
+  environment.variables = { 
+    GOROOT = [ "${pkgs.go.out}/share/go" ]; 
+  };
+
   networking = {
     hostName = "nixos";
     networkmanager.enable = true;
@@ -36,6 +40,7 @@
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
       fira-mono hack-font dejavu_fonts font-awesome-ttf terminus_font libertine
+      liberation_ttf_v2_binary
     ];
   };
 
@@ -47,6 +52,11 @@
     bluetooth.enable = true;
 
     opengl.driSupport32Bit = true;
+
+    trackpoint = {
+      enable = true;
+      emulateWheel = true;
+    };
   };
   nixpkgs.config.pulseaudio = true;
 
@@ -70,7 +80,7 @@
       windowManager.xmonad = {
         enable = true;
         enableContribAndExtras = true;
-        extraPackages = hpkgs: [ hpkgs.xmobar ];
+        extraPackages = hpkgs: [ hpkgs.xmobar hpkgs.udev hpkgs.async ];
       };
 
       config = pkgs.lib.mkOverride 50 (builtins.readFile ./xorg.conf);

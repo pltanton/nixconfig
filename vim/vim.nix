@@ -6,20 +6,26 @@ with import <nixpkgs> {};
   vam.pluginDictionaries = [
     { names = [
       "Tabular"
-      "Syntastic"
-      "neomake"
       "surround"
+
+      "neomake"
+      "deoplete-nvim"
+
+      "The_NERD_tree"
       "ctrlp"
       "fugitive"
-      "deoplete-nvim"
+      "undotree"
+
       "vimtex"
 
+      "airline"
       "vim-colorschemes"
+      "vim-airline-themes"
     ]; }
     { names = [ "vim-go" "deoplete-go" ]; ft_regex = "^go$"; }
-    { names = [ "deoplete-jedi" "flake8-vim" ]; ft_regex = "^python$"; }
+    { names = [ "flake8-vim" "deoplete-jedi" ]; ft_regex = "^python$"; }
     { name = "vim-addon-nix"; file_regex = "^nix$"; }
     { name = "vimtex"; ft_regex = "^tex$"; }
-    { name = "ghcmod"; ft_regex = "^haskell$"; }
+    { names = [ "ghcmod" "neco-ghc" ]; ft_regex = "^haskell$"; }
   ];
 }
