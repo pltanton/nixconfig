@@ -1,12 +1,16 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./layout-patch/patch.nix
-      ./systemPackages.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./layout-patch/patch.nix
+    ./systemPackages.nix
+    ./openvpn.nix
+  ];
+
+  nixpkgs.overlays = [ 
+    (import (builtins.fetchTarball https://github.com/pltanton/nix-overlays/archive/master.tar.gz))
+  ];
 
   boot = {
     loader.systemd-boot.enable = true;
@@ -20,8 +24,8 @@
 
   networking = {
     hostName = "nixos";
-    networkmanager.enable = true;
     nameservers = [ "8.8.8.8" ];
+    networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 22 8888 ];
   };
 
@@ -58,6 +62,7 @@
       emulateWheel = true;
     };
   };
+
   nixpkgs.config.pulseaudio = true;
 
   virtualisation.docker.enable = true;
@@ -66,8 +71,16 @@
   services = {
     openssh.enable = true;
     printing.enable = true;
+    pcscd.enable = true;
+    upower.enable = true;
 
     udev.extraRules = builtins.readFile ./udev;
+
+    syncthing = {
+      enable = true;
+      dataDir = "/home/anton/.syncthing";
+      user = "anton";
+    };
 
     xserver = {
       enable = true;
