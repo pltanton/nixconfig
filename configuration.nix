@@ -6,6 +6,7 @@
     ./layout-patch/patch.nix
     ./systemPackages.nix
     ./openvpn.nix
+    ./wg.nix
   ];
 
   nixpkgs.overlays = [ 
@@ -13,18 +14,14 @@
   ];
 
   boot = {
+    extraModulePackages = [ config.boot.kernelPackages.wireguard ];
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
     plymouth.enable = true;
   };
 
-  environment.variables = { 
-    GOROOT = [ "${pkgs.go.out}/share/go" ]; 
-  };
-
   networking = {
     hostName = "nixos";
-    nameservers = [ "8.8.8.8" ];
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 22 8888 ];
   };
@@ -71,6 +68,7 @@
   services = {
     openssh.enable = true;
     printing.enable = true;
+    printing.drivers = [ pkgs.gutenprint ];
     pcscd.enable = true;
     upower.enable = true;
 

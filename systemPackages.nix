@@ -25,5 +25,7 @@
     ntfs3g
 
     vim
+
+    wireguard
   ];
 }
