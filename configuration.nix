@@ -24,6 +24,7 @@
     hostName = "nixos";
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 22 8888 ];
+    firewall.enable = false;
   };
 
   i18n = {
