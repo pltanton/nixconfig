@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
+  imports = builtins.filter (builtins.pathExists) [
     ./hardware-configuration.nix
     ./layout-patch/patch.nix
     ./systemPackages.nix
