@@ -3,10 +3,12 @@
 {
   imports = builtins.filter (builtins.pathExists) [
     ./hardware-configuration.nix
-    ./layout-patch/patch.nix
+    #./layout-patch/patch.nix
     ./systemPackages.nix
     ./openvpn.nix
     ./wg.nix
+
+    ./overrides.nix
   ];
 
   nixpkgs.overlays = [ 
@@ -52,6 +54,10 @@
     pulseaudio.support32Bit = true;
 
     bluetooth.enable = true;
+    bluetooth.extraConfig = "
+      [General]
+      Enable=Source,Sink,Media,Socket
+    ";
 
     opengl.driSupport32Bit = true;
 
@@ -59,19 +65,26 @@
       enable = true;
       emulateWheel = true;
     };
+
+    sane.enable = true;
+    sane.snapshot = true;
+    sane.netConf = "bjnp://192.168.30.6";
   };
 
   nixpkgs.config.pulseaudio = true;
 
   virtualisation.docker.enable = true;
   virtualisation.docker.liveRestore = false;
+  virtualisation.virtualbox.host.enable = true;
 
   services = {
     openssh.enable = true;
+    openssh.forwardX11 = true;
     printing.enable = true;
     printing.drivers = [ pkgs.gutenprint ];
     pcscd.enable = true;
     upower.enable = true;
+    saned.enable = true;
 
     udev.extraRules = builtins.readFile ./udev;
 
@@ -83,16 +96,14 @@
 
     xserver = {
       enable = true;
-      layout = "us,ru";
-      xkbVariant = "dvp,diktor";
+      layout = "us,us";
+      xkbVariant = "dvp,";
       xkbOptions = "eurosign:e,grp:rctrl_toggle";
       libinput.enable = true;
 
       displayManager.lightdm.enable = true;
-      windowManager.xmonad = {
+      desktopManager.gnome3 = {
         enable = true;
-        enableContribAndExtras = true;
-        extraPackages = hpkgs: [ hpkgs.xmobar hpkgs.udev hpkgs.async ];
       };
 
       config = pkgs.lib.mkOverride 50 (builtins.readFile ./xorg.conf);
@@ -106,7 +117,7 @@
       isNormalUser = true;
       home = "/home/anton";
       shell = pkgs.zsh;
-      extraGroups = [ "wheel" "networkmanager" "audio" "docker" ];
+      extraGroups = [ "lp" "scanner" "vboxusers" "wheel" "networkmanager" "audio" "docker" ];
     };
     julsa = {
       isNormalUser = true;
@@ -121,7 +132,7 @@
 
   system = {
     autoUpgrade.enable = true;
-    autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
-    stateVersion = "unstable";
+    autoUpgrade.channel = "https://nixos.org/channels/nixos-18.03";
+    nixos.stateVersion = "unstable";
   };
 }

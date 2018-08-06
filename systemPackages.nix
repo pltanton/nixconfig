@@ -2,8 +2,6 @@
 
 {
   environment.systemPackages = with pkgs; [
-    sac-core
-
     acpi 
     docker
     gcc 
@@ -23,9 +21,13 @@
 
     exfat
     ntfs3g
+    nfs-utils
+    suidChroot
+    xboxdrv
 
     vim
 
     wireguard
+    sshfs
   ];
 }
